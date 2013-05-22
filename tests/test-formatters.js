@@ -22,13 +22,13 @@ describe('formatters.formatValue', function (done) {
 
     it('formats a number', function (done) {
         value = 123;
-        expected = "123";
+        expected = '123';
         actual = formatters.formatValue(value);
 
         assert.equal(actual, expected);
 
         value = 123.4;
-        expected = "123.4";
+        expected = '123.4';
         actual = formatters.formatValue(value);
 
         assert.equal(actual, expected);
@@ -48,6 +48,44 @@ describe('formatters.formatValue', function (done) {
         };
         expected = '@"format [""BIS_patrolLength = %1"", _PatrolLength]"';
         actual = formatters.formatValue(value);
+
+        assert.equal(actual, expected);
+        done();
+    });
+
+    it('formats an array', function (done) {
+        var value, actual, expected;
+
+        value = [123, 456];
+        expected = [
+            "{",
+            "    123,",
+            "    456",
+            "}"
+        ].join('\n');
+        actual = formatters.formatArray(value, "    ");
+
+        assert.equal(actual, expected);
+        done();
+    });
+
+    it('formats an array value', function (done) {
+        var value, actual, expected;
+
+        value = [123, 456];
+        expected = [
+            "{",
+            "    123,",
+            "    456",
+            "}"
+        ].join('\n');
+        actual = formatters.formatValue(value, "    ");
+
+        assert.equal(actual, expected);
+
+        value = 123.4;
+        expected = 123.4;
+        actual = formatters.formatValue(value, "    ");
 
         assert.equal(actual, expected);
         done();
