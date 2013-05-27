@@ -1,0 +1,19 @@
+class Groups
+{
+    items=3;
+    class Item0
+    {
+        name="alice";
+        side="WEST";
+    };
+    class Item1
+    {
+        name="bob";
+        side="WEST";
+    };
+    class Item2
+    {
+        name="eve";
+        side="WEST";
+    };
+};

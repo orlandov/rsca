@@ -1,0 +1,99 @@
+{
+    name: 'Mission',
+    type: 'class',
+    values: {
+       addOns: [
+            "cacharacters_e",
+            "ca_missions_secops",
+            "ca_missions_ambientcombat"
+       ],
+       addOnsAuto: [
+            "cacharacters_e",
+            "ca_missions_secops",
+            "ca_missions_ambientcombat"
+       ],
+       randomSeed: 3792899
+    }
+    children: [
+        {
+            name: 'Intel',
+            type: 'class',
+            values: {
+                briefingName: "@STR_TEMP_SECOPS_NAME",
+                others: "..."
+            },
+        },
+        {
+            name: 'Groups'
+            type: 'classlist',
+            children: [
+                {
+                    name: 'Vehicles',
+                    type: 'classlist',
+                    values: {
+                        side: "WEST"
+                    },
+                    children: [
+                        {
+                            {
+                                id: 0,
+                                side: "WEST",
+                                player: "PLAYER COMMANDER",
+                                vehicle: "US_Delta_Force_TL_EP1",
+                                leader: 1,
+                                and: "so on...",
+                                position: [
+                                    {
+                                        type: 'literal',
+                                        val: '@_Insertion_X'
+                                    },
+                                    {
+                                        type: 'literal',
+                                        val: '@_Insertion_Y'
+                                    },
+                                    {
+                                        type: 'literal',
+                                        val: '@_Insertion_Z - 1000'
+                                    }
+                                ],
+                            },
+                            {
+                                id: 1,
+                                side: "WEST",
+                                player: "PLAYER CDG",
+                                vehicle: "US_Delta_Force_TL_EP1",
+                                and: "so on...",
+                                position: [
+                                    {
+                                        type: 'literal',
+                                        val: '@_Insertion_X'
+                                    },
+                                    {
+                                        type: 'literal',
+                                        val: '@_Insertion_Y'
+                                    },
+                                    {
+                                        type: 'literal',
+                                        val: '@_Insertion_Z - 1000'
+                                    }
+                                ],
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            name: 'Markers'
+            type: 'classlist',
+            children: [
+                {
+                    values: {
+                        position: []:
+                            
+                    }
+                }
+            ]
+        }
+    ]
+}

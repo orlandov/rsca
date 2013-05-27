@@ -1,10 +1,9 @@
 {
-    "name": "rsc",
-    "description": "Random scenario composer (for the Arma series)",
-    "author": "Orlando Vazquez <ovazquez@gmail.com> (http://lan.do)",
+    "name": "arma-scenario-lib",
+    "description": "Arma Scenario Library",
+    "author": "Orlando Vazquehz <ovazquez@gmail.com> (http://lan.do)",
     "dependencies": {
         "mocha": ">= 1.9.0",
-        "mu2": ">= 0.5.17",
         "sprintf": ">= 0.1.1",
         "assert-plus", ">= 0.1.2"
     },

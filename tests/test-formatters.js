@@ -1,7 +1,17 @@
 var assert = require('assert');
+var fs = require('fs');
 var formatters = require('../lib/formatters');
+var path = require('path');
 
-describe('formatters.formatValue', function (done) {
+// TODO replace 'expr' objects with 'literals'
+
+function compareOutput(actual, expectedFn) {
+    expectedFn = path.join(__dirname, 'expected', expectedFn);
+    var data = fs.readFileSync(expectedFn);
+    assert.equal(actual, data.toString().trim());
+}
+
+describe('formatters.formatValue', function () {
     var value, actual, expected;
 
     it('formats a string', function (done) {
@@ -11,8 +21,8 @@ describe('formatters.formatValue', function (done) {
 
         assert.equal(actual, expected);
 
-        value = 'hello "cruel" world';
-        expected = '"hello ""cruel"" world"';
+        value = 'goodbye "cruel" world';
+        expected = '"goodbye ""cruel"" world"';
         actual = formatters.formatValue(value);
 
         assert.equal(actual, expected);
@@ -112,27 +122,35 @@ describe('formatters.block', function (done) {
 
     it('formats a nested block with indent',
     function (done) {
-        var block1 = formatters.block({
-            name: 'Intel',
-            content: 'something'
-        });
+        var obj0 = {
+            name: 'BlockC',
+            children: []
+        };
 
-        var block0 = formatters.block({
-            name: 'Mission',
-            content: block1
+        var obj1 = {
+            name: 'BlockB',
+            children: [obj0]
+        };
+
+
+        var actual = formatters.block({
+            name: 'BlockA',
+            children: [obj1]
         });
 
         var expected = [
-            'class Mission',
+            'class BlockA',
             '{',
-            '    class Intel',
+            '    class BlockB',
             '    {',
-            '        something',
+            '        class BlockC',
+            '        {',
+            '        };',
             '    };',
             '};'
         ].join('\n');
 
-        assert.equal(block0, expected);
+        assert.equal(actual, expected);
         done();
     });
 
@@ -140,13 +158,11 @@ describe('formatters.block', function (done) {
     function (done) {
         var actual = formatters.block({
             name: 'Mission',
-            content: 'something'
         });
 
         var expected = [
             'class Mission',
             '{',
-            '    something',
             '};'
         ].join('\n');
 
@@ -158,7 +174,6 @@ describe('formatters.block', function (done) {
     function (done) {
         var actual = formatters.block({
             name: 'Mission',
-            content: 'something',
             values: {
                 addOns: ['addon0', 'addon1'],
                 addOnsAuto: ['addon2', 'addon3']
@@ -168,17 +183,23 @@ describe('formatters.block', function (done) {
         var expected = [
             'class Mission',
             '{',
-            '    addOns[] = {',
+            '    addOns[]={',
             '        "addon0",',
             '        "addon1"',
             '    };',
-            '    addOnsAuto[] = {',
+            '    addOnsAuto[]={',
             '        "addon2",',
             '        "addon3"',
             '    };',
-            '    something',
             '};'
         ].join('\n');
+
+
+//         console.log('actual');
+//         console.log(actual);
+//         console.log('expected');
+//         console.log(expected);
+//         console.log('--');
 
         assert.equal(actual, expected);
         done();
@@ -188,7 +209,6 @@ describe('formatters.block', function (done) {
     function (done) {
         var actual = formatters.block({
             name: 'Mission',
-            content: 'something',
             values: {
                 addOns: ['addon0', 'addon1'],
                 addOnsAuto: ['addon2', 'addon3'],
@@ -199,16 +219,15 @@ describe('formatters.block', function (done) {
         var expected = [
             'class Mission',
             '{',
-            '    addOns[] = {',
+            '    addOns[]={',
             '        "addon0",',
             '        "addon1"',
             '    };',
-            '    addOnsAuto[] = {',
+            '    addOnsAuto[]={',
             '        "addon2",',
             '        "addon3"',
             '    };',
-            '    randomseed = 123.4;',
-            '    something',
+            '    randomseed=123.4;',
             '};'
         ].join('\n');
 
@@ -220,7 +239,6 @@ describe('formatters.block', function (done) {
     function (done) {
         var actual = formatters.block({
             name: 'Mission',
-            content: 'something',
             values: {
                 expActiv: 'H1 land "GET IN"'
             }
@@ -229,8 +247,7 @@ describe('formatters.block', function (done) {
         var expected = [
             'class Mission',
             '{',
-            '    expActiv = "H1 land ""GET IN""";',
-            '    something',
+            '    expActiv="H1 land ""GET IN""";',
             '};'
         ].join('\n');
 
@@ -238,11 +255,10 @@ describe('formatters.block', function (done) {
         done();
     });
 
-    it('formats a config block that has "referency" key/value pairs',
+    it('can format expressions',
     function (done) {
         var actual = formatters.block({
             name: 'Mission',
-            content: 'something',
             values: {
                 startWeather: {
                     type: 'expr',
@@ -254,8 +270,7 @@ describe('formatters.block', function (done) {
         var expected = [
             'class Mission',
             '{',
-            '    startWeather = @_weather;',
-            '    something',
+            '    startWeather=@_weather;',
             '};'
         ].join('\n');
 
@@ -263,11 +278,10 @@ describe('formatters.block', function (done) {
         done();
     });
 
-    it('formats a config block that has "quoted reference" key/value pairs',
+    it('can format expressions that need to be quoted',
     function (done) {
         var actual = formatters.block({
             name: 'Mission',
-            content: 'something',
             values: {
                 init: {
                     type: 'expr',
@@ -279,13 +293,198 @@ describe('formatters.block', function (done) {
         var expected = [
             'class Mission',
             '{',
-            '    init = @"format [""BIS_patrolLength = %1"", _PatrolLength]";',
-            '    something',
+            '    init=@"format [""BIS_patrolLength = %1"", _PatrolLength]";',
             '};'
         ].join('\n');
 
         assert.equal(actual, expected);
         done();
     });
-});
 
+    it('can format arrays of expression',
+    function (done) {
+        var actual = formatters.block({
+            name: 'Mission',
+            values: {
+                position: [
+                    {
+                        type: 'expr',
+                        val: '_Insertion_X'
+                    },
+                    {
+                        type: 'expr',
+                        val: '_Insertion_Y'
+                    },
+                    {
+                        type: 'expr',
+                        val: '_Insertion_Z'
+                    }
+                ]
+            }
+        });
+
+        var expected = [
+            'class Mission',
+            '{',
+            '    position[]={',
+            '        @_Insertion_X,',
+            '        @_Insertion_Y,',
+            '        @_Insertion_Z',
+            '    };',
+            '};'
+        ].join('\n');
+
+        assert.equal(actual, expected);
+        done();
+    });
+
+    it('can format an array with length 0 or 1 items',
+    function (done) {
+        var actual = formatters.block({
+            name: 'Mission',
+            values: {
+                synchronizations: [0],
+                empty: []
+            }
+        });
+
+        var expected = [
+            'class Mission',
+            '{',
+            '    synchronizations[]={0};',
+            '    empty[]={};',
+            '};'
+        ].join('\n');
+
+//         console.log('actual');
+//         console.log(actual);
+
+        assert.equal(actual, expected);
+        done();
+    });
+
+    it('can format literal expressions',
+    function (done) {
+        var actual = formatters.block({
+            name: 'Mission',
+            values: {
+                position: [
+                    {
+                        type: 'literal',
+                        val: '@_Insertion_X + 5'
+                    },
+                    {
+                        type: 'literal',
+                        val: '@_Insertion_Y - 5'
+                    },
+                    {
+                        type: 'literal',
+                        val: '@_Insertion_Z * 100'
+                    }
+                ]
+            }
+        });
+
+        var expected = [
+            'class Mission',
+            '{',
+            '    position[]={',
+            '        @_Insertion_X + 5,',
+            '        @_Insertion_Y - 5,',
+            '        @_Insertion_Z * 100',
+            '    };',
+            '};'
+        ].join('\n');
+
+        assert.equal(actual, expected);
+        done();
+    });
+
+    it('can format a shallow class list',
+    function (done) {
+        var actual = formatters.classlist({
+            name: 'Groups',
+            type: 'classlist',
+            children: [
+                {
+                    values: {
+                        name: "alice",
+                        side: "WEST"
+                    }
+                },
+                {
+                    values: {
+                        name: "bob",
+                        side: "WEST"
+                    }
+                },
+                {
+                    values: {
+                        name: "eve",
+                        side: "WEST"
+                    }
+                }
+            ]
+        });
+
+        var expected = [
+            'class Groups',
+            '{',
+            '    items=3;',
+            '    class Item0',
+            '    {',
+            '        name="alice";',
+            '        side="WEST";',
+            '    };',
+            '    class Item1',
+            '    {',
+            '        name="bob";',
+            '        side="WEST";',
+            '    };',
+            '    class Item2',
+            '    {',
+            '        name="eve";',
+            '        side="WEST";',
+            '    };',
+            '};'
+        ].join('\n');
+
+//         console.log('actual');
+//         console.log(actual);
+
+        assert.equal(actual, expected);
+
+        done();
+    });
+
+    it('can format a nested class lists',
+    function (done) {
+        var actual = formatters.classlist({
+            name: 'Groups',
+            type: 'classlist',
+            children: [
+                {
+                    values: {
+                        name: "alice",
+                        side: "WEST"
+                    }
+                },
+                {
+                    values: {
+                        name: "bob",
+                        side: "WEST"
+                    }
+                },
+                {
+                    values: {
+                        name: "eve",
+                        side: "WEST"
+                    }
+                }
+            ]
+        });
+
+        compareOutput(actual, 'nested-class-list.txt');
+        done();
+    });
+});

@@ -1,0 +1,395 @@
+version=11;
+class Mission
+{
+	addOns[]=
+	{
+		"cacharacters_e",
+		"ca_missions_secops",
+		"ca_missions_ambientcombat"
+	};
+	addOnsAuto[]=
+	{
+		"cacharacters_e",
+		"ca_missions_secops",
+		"ca_missions_ambientcombat"
+	};
+	randomSeed=3792899;
+	class Intel
+	{
+		briefingName="@STR_TEMP_SECOPS_NAME";
+		briefingDescription="@STR_TEMP_SECOPS_DESC";
+		startWeather=@_weather; 
+		forecastWeather=@_weatherForecast; 
+		hour=@_hour; 
+		minute=@_minute; 
+		startFog = @_fog; 
+		forecastFog = @_fogForecast; 
+		year = @_year; 
+		month = @_month; 
+		day = @_day;
+		viewDistance = @_viewDistance;
+	};
+	class Groups
+	{
+		items=7;
+		class Item0
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=6;
+				class Item0
+				{
+					position[]={@_Insertion_X,@_Insertion_Y,@_Insertion_Z - 1000};
+					id=0;
+					side="WEST";
+					vehicle="US_Delta_Force_TL_EP1";
+					player="PLAYER COMMANDER";
+					leader=1;
+					rank="LIEUTENANT";
+					skill=1.000000;
+					synchronizations[]={6,7};
+					init=@"format [""BIS_patrolLength = %1"", _PatrolLength]";
+				};
+				class Item1
+				{
+					position[]={@_Insertion_X + 5,@_Insertion_Y,@_Insertion_Z - 1005};
+					id=1;
+					side="WEST";
+					vehicle="US_Delta_Force_AR_EP1";
+					player="PLAY CDG";
+					rank="SERGEANT";
+					skill=1.000000;
+				};
+				class Item2
+				{
+					position[]={@_Insertion_X + 10,@_Insertion_Y,@_Insertion_Z - 1005};
+					id=2;
+					side="WEST";
+					vehicle="US_Soldier_Marksman_EP1";
+					player="PLAY CDG";
+					rank="SERGEANT";
+					skill=1.000000;
+				};
+				class Item3
+				{
+					position[]={@_Insertion_X + 15,@_Insertion_Y,@_Insertion_Z - 1005};
+					id=3;
+					side="WEST";
+					vehicle="US_Soldier_Sniper_EP1";
+					player="PLAY CDG";
+					rank="SERGEANT";
+					skill=1.000000;
+				};
+				class Item4
+				{
+					position[]={@_Insertion_X + 20,@_Insertion_Y,@_Insertion_Z - 1005};
+					id=4;
+					side="WEST";
+					vehicle="US_Delta_Force_M14_EP1";
+					player="PLAY CDG";
+					rank="SERGEANT";
+					skill=1.000000;
+				};
+				class Item5
+				{
+					position[]={@_Insertion_X + 25,@_Insertion_Y,@_Insertion_Z - 1005};
+					id=5;
+					side="WEST";
+					vehicle="US_Delta_Force_Medic_EP11";
+					player="PLAY CDG";
+					rank="SERGEANT";
+					skill=1.000000;
+				};
+			};
+		};
+		class Item1
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={@_Insertion_X,@_Insertion_Y,@_Insertion_Z - 1000};
+					special="FLY";
+					id=8;
+					side="WEST";
+					vehicle="UH60M_EP1";
+					leader=1;
+					skill=0.600000;
+					text="H1";
+					init="this setCaptive true";
+				};
+			};
+			class Waypoints
+			{
+				items=3;
+				class Item0
+				{
+					position[]={@_Insertion_X,@_Insertion_Y,@_Insertion_Z};
+					type="TR UNLOAD";
+					combat="STEALTH";
+					synchronizations[]={0};
+					class Effects
+					{
+					};
+					showWP="NEVER";
+				};
+				class Item1
+				{
+					position[]={@_Insertion_X,@_Insertion_Y,@_Insertion_Z - 8000};
+					class Effects
+					{
+					};
+					showWP="NEVER";
+				};
+				class Item2
+				{
+					position[]={@_Insertion_X,@_Insertion_Y,@_Insertion_Z};
+					type="LOAD";
+					expActiv="H1 land ""GET IN""";
+					class Effects
+					{
+					};
+					showWP="NEVER";
+				};
+			};
+		};
+		class Item2
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={@_Insertion_X + 10,@_Insertion_Y,@_Insertion_Z + 20};
+					id=7;
+					side="LOGIC";
+					vehicle="AmbientCombatManager";
+					leader=1;
+					skill=0.600000;
+					synchronizations[]={0};
+					init=@"format [""BIS_acmIntensity = %1; BIS_civLifeValue = %2"", _ACMIntensity, _CivilianLife]";
+				};
+			};
+		};
+		class Item3
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={@_Insertion_X + 5,@_Insertion_Y,@_Insertion_Z + 20};
+					id=6;
+					side="LOGIC";
+					vehicle="SecOpManager";
+					leader=1;
+					skill=0.600000;
+					synchronizations[]={0};
+				};
+			};
+		};
+		class Item4
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={@_Insertion_X + 15,@_Insertion_Y,@_Insertion_Z + 20};
+					id=9;
+					side="LOGIC";
+					vehicle="BattleFieldClearance";
+					leader=1;
+					skill=0.600000;
+					synchronizations[]={0};
+				};
+			};
+		};
+		class Item5
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={@_Insertion_X + 20,@_Insertion_Y,@_Insertion_Z + 20};
+					id=10;
+					side="LOGIC";
+					vehicle="AlternativeInjurySimulation";
+					leader=1;
+					skill=0.600000;
+					synchronizations[]={0};
+				};
+			};
+		};
+		class Item6
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={@_Insertion_X + 25,@_Insertion_Y,@_Insertion_Z + 20};
+					id=11;
+					side="LOGIC";
+					vehicle="FirstAidSystem";
+					leader=1;
+					skill=0.600000;
+					synchronizations[]={0};
+				};
+			};
+		};
+	};
+	class Markers
+	{
+		items=1;
+		class Item0
+		{
+			position[]={@_Insertion_X,@_Insertion_Y,@_Insertion_Z};
+			name="Insertion";
+			text="@str_temp_secops_insertion";
+			type="mil_start";
+			colorName="ColorGreen";
+		};
+	};
+	class Sensors
+	{
+		items=6;
+		class Item0
+		{
+			position[]={@_Insertion_X + 20,@_Insertion_Y,@_Insertion_Z - 20};
+			a=0.000000;
+			b=0.000000;
+			interruptable=1;
+			type="END1";
+			age="UNKNOWN";
+			text="Good ending";
+			expCond="BIS_ending == 3";
+			class Effects
+			{
+			};
+		};
+		class Item1
+		{
+			position[]={@_Insertion_X + 30,@_Insertion_Y,@_Insertion_Z - 20};
+			a=0.000000;
+			b=0.000000;
+			interruptable=1;
+			type="LOOSE";
+			age="UNKNOWN";
+			text="Bad ending";
+			expCond="BIS_ending == 1";
+			class Effects
+			{
+			};
+		};
+		class Item2
+		{
+			position[]={@_Insertion_X + 30,@_Insertion_Y,@_Insertion_Z - 25};
+			a=0.000000;
+			b=0.000000;
+			interruptable=1;
+			age="UNKNOWN";
+			text="Player squad destroyed";
+			expCond="{alive _x} count (units (group player)) == 0";
+			expActiv="BIS_ending = 1";
+			class Effects
+			{
+			};
+		};
+		class Item3
+		{
+			position[]={@_Insertion_X + 25,@_Insertion_Y,@_Insertion_Z - 20};
+			a=0.000000;
+			b=0.000000;
+			interruptable=1;
+			type="END2";
+			age="UNKNOWN";
+			text="Moderate ending";
+			expCond="BIS_ending == 4";
+			class Effects
+			{
+			};
+		};
+		class Item4
+		{
+			position[]={@_Insertion_X + 35,@_Insertion_Y,@_Insertion_Z - 20};
+			a=0.000000;
+			b=0.000000;
+			interruptable=1;
+			type="SWITCH";
+			age="UNKNOWN";
+			text="All disembarked";
+			expCond="({(vehicle _x) == H1} count (units (group player))) == 0";
+			expActiv="BIS_handle = [] spawn {sleep 10; BIS_SOM_mainScope setVariable [""paused"", false]}";
+			class Effects
+			{
+			};
+			synchronizations[]={0};
+		};
+		class Item5
+		{
+			position[]={@_Insertion_X + 40,@_Insertion_Y,@_Insertion_Z - 20};
+			a=0.000000;
+			b=0.000000;
+			interruptable=1;
+			age="UNKNOWN";
+			text="Leader disembarked";
+			expCond="(vehicle player) != H1";
+			expActiv="(units (group player)) orderGetIn false; {_x action [""GETOUT"", H1]; unassignVehicle _x} forEach (units (group player))";
+			class Effects
+			{
+			};
+		};
+	};
+};
+class Intro
+{
+	randomSeed=6304771;
+	class Intel
+	{
+		startWeather=0.250000;
+		forecastWeather=0.250000;
+		year=2008;
+		month=10;
+		day=11;
+		hour=9;
+		minute=20;
+	};
+};
+class OutroWin
+{
+	randomSeed=5998595;
+	class Intel
+	{
+		startWeather=0.250000;
+		forecastWeather=0.250000;
+		year=2008;
+		month=10;
+		day=11;
+		hour=9;
+		minute=20;
+	};
+};
+class OutroLoose
+{
+	randomSeed=4592131;
+	class Intel
+	{
+		startWeather=0.250000;
+		forecastWeather=0.250000;
+		year=2008;
+		month=10;
+		day=11;
+		hour=9;
+		minute=20;
+	};
+};
